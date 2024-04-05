@@ -1,0 +1,33 @@
+@import 'https://js.arcgis.com/4.29/@arcgis/core/assets/esri/themes/dark/main.css';
+@import '@esri/calcite-components/dist/calcite/calcite.css';
+html,
+body,
+#root,
+calcite-shell {
+  --calcite-color-background: #353535;
+  --calcite-color-brand: #009AF2;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  /* display: flex;
+  flex-direction: column; */
+}
+
+/* calcite-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+} */
+
+.sidebar {
+  background-color: var(--calcite-color-background);
+}
+
+.slice-widget-button {
+  width: 100%;
+}
+
+.hidden {
+  display: none;
+}
