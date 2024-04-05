@@ -53,20 +53,24 @@ const Header: React.FC<HeaderProps> = ({ username, thumbnail, logoUrl, portalUrl
       <a slot='content-start'>
         <div ref={headerRef}></div>
       </a>
-      <a slot='content-end'>
+      <a slot='content-start'>
+        <p>Item ID: </p>
         <CalciteInputText
           placeholder={itemId}
           onCalciteInputTextChange={(event) => onItemIdChange(event.target.value)}
-        >
-          {/* <CalciteButton
-            slot='action' kind="brand"
-            onClick={() => {
-              
-              onItemIdChange(inputValue);
-            }}>
-            <CalciteIcon icon="submit"></CalciteIcon>
-          </CalciteButton> */}
-        </CalciteInputText>
+        />
+      </a>
+      <a slot='content-end'>
+        <CalciteIcon icon="table" scale="l" />
+      </a>
+      <a slot='content-end'>
+        <CalciteIcon icon="map" scale="l" />
+      </a>
+      <a slot='content-end'>
+        <CalciteIcon icon="globe" scale="l" />
+      </a>
+      <a slot='content-end'>
+        <CalciteIcon icon="home" scale="l" />
       </a>
       <CalciteNavigationUser slot='user' username={username} thumbnail={thumbnail} />
     </CalciteNavigation>
