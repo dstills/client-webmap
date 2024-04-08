@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import "./index.css";
-import Home from "./routes/home";
-import Scene from './routes/scene';
+import { Route, Link } from "react-router-dom";
+import {
+  CalciteShell,
+  CalciteShellPanel,
+  CalcitePanel
+} from "@esri/calcite-components-react";
 import MapView from "@arcgis/core/views/MapView";
 import GeoJSONLayer from "@arcgis/core/layers/GeoJSONLayer";
 import HeatMapRenderer from "@arcgis/core/renderers/HeatmapRenderer";
@@ -10,25 +12,9 @@ import TimeInterval from '@arcgis/core/TimeInterval'
 import TimeSlider from "@arcgis/core/widgets/TimeSlider";
 import Expand from "@arcgis/core/widgets/Expand";
 import TimeExtent from "@arcgis/core/TimeExtent";
-import SceneView from "@arcgis/core/views/SceneView";
-import { ArcgisMap, ArcgisScene, ArcgisBasemapGallery, ArcgisExpand, ArcgisTimeSlider, ArcgisLayerList, ArcgisCompass } from "@arcgis/map-components-react";
-import { setAssetPath as setCalciteAssetPath } from "@esri/calcite-components/dist/components";
-setCalciteAssetPath(window.location.href);
-// import { ArcgisScene } from "@arcgis/map-components-react";
-import {
-  CalciteShell,
-  CalciteShellPanel,
-  CalcitePanel
-} from "@esri/calcite-components-react";
-import Header from "./components/header";
-import Sidebar from "./components/sidebar";
-import MapContext from "./components/mapContext";
-// import defineCustomElements to register custom elements with the custom elements registry
-import { defineCustomElements as defineMapElements } from "@arcgis/map-components/dist/loader";
-import { defineCustomElements as defineCalciteElements } from "@esri/calcite-components/dist/loader";
-// Register custom elements
-defineMapElements(window, { resourcesUrl: "https://js.arcgis.com/map-components/4.29/assets" });
-defineCalciteElements(window,{ resourcesUrl: "https://js.arcgis.com/calcite-components/2.5.1/assets" });
+import { ArcgisMap, ArcgisBasemapGallery, ArcgisExpand, ArcgisTimeSlider, ArcgisLayerList, ArcgisCompass } from "@arcgis/map-components-react";
+import Sidebar from "../components/sidebar";
+import MapContext from "../components/mapContext";
 
 const fetchTimeExtent = async (url: string, time_field: string): Promise<TimeExtent> => {
   const response = await fetch(url)
@@ -41,10 +27,10 @@ const fetchTimeExtent = async (url: string, time_field: string): Promise<TimeExt
   })
 }
 
-export default function App() {
-  const [mapView, setMapView] = useState<(MapView | SceneView | null)>(null);
+export default function EsriMap() {
+  const [mapView, setMapView] = useState<(MapView | null)>(null);
   const [itemId , setItemId] = useState<string>("fd17c88a44ff4a6590bed974ea7eb0b1");
-  const handleArcgisViewReadyChange = async (event: { target: { view: MapView | SceneView } }) => {
+  const handleArcgisViewReadyChange = async (event: { target: { view: MapView } }) => {
     const { view } = event.target;
     console.log("MapView ready", view);
     const timeExtent = await fetchTimeExtent("http://localhost:1337/api/features/", "sampledate");
@@ -146,48 +132,25 @@ export default function App() {
     setItemId(newId);
   };
   return (
-    <Router>
-      <MapContext.Provider value={mapView}>
-        <CalciteShell>
-          <Header
-            username="Daniel Stills"
-            thumbnail="/assets/user.jpg"
-            logoUrl="/assets/logo.png"
-            portalUrl="https://geosyntec.maps.arcgis.com"
-            itemId={itemId}
-            onItemIdChange={handleItemIdChange}
-          />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/map" element={
-              <>
-                <Sidebar />
-                <ArcgisMap
-                  style={{ height: '100%', width: '100%' }}
-                  itemId={itemId}
-                  onArcgisViewReadyChange={handleArcgisViewReadyChange}
-                >
-                  <ArcgisExpand>
-                    <ArcgisBasemapGallery />
-                  </ArcgisExpand>
-                  <ArcgisExpand position="bottom-right">
-                    <ArcgisLayerList />
-                  </ArcgisExpand>
-                  <ArcgisCompass />
-                </ArcgisMap>
-              </>
-            } />
-            <Route path="/scene" element={
-              <>
-                <Sidebar />
-                <Scene
-                  onReady={handleArcgisViewReadyChange}
-                  zoom={10}
-                  center={[-118.805, 34.027]}
-              /></>} />
-          </Routes>
-        </CalciteShell>
-      </MapContext.Provider>
-    </Router>
-  )
+    <>
+      <CalciteShellPanel slot="start" position="start">
+        <Sidebar />
+      </CalciteShellPanel>
+      <CalcitePanel>
+        <ArcgisMap
+          style={{ height: '100%', width: '100%' }}
+          itemId={itemId}
+          onArcgisViewReadyChange={handleArcgisViewReadyChange}
+        >
+          <ArcgisExpand>
+            <ArcgisBasemapGallery />
+          </ArcgisExpand>
+          <ArcgisExpand position="bottom-right">
+            <ArcgisLayerList />
+          </ArcgisExpand>
+          <ArcgisCompass />
+        </ArcgisMap>
+      </CalcitePanel>
+    </>
+  );
 }

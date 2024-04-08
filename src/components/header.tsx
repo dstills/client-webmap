@@ -1,12 +1,12 @@
 import React, { useContext, useRef, useEffect } from 'react';
+import { Route, Link } from 'react-router-dom';
 import MapContext from './mapContext';
 import {
   CalciteNavigation,
   CalciteNavigationLogo,
   CalciteNavigationUser,
   CalciteInputText,
-  CalciteButton,
-  CalciteIcon
+  CalciteIcon,
 } from '@esri/calcite-components-react'
 import Search from '@arcgis/core/widgets/Search';
 import "@esri/calcite-components/dist/components/calcite-navigation"
@@ -60,18 +60,18 @@ const Header: React.FC<HeaderProps> = ({ username, thumbnail, logoUrl, portalUrl
           onCalciteInputTextChange={(event) => onItemIdChange(event.target.value)}
         />
       </a>
-      <a slot='content-end'>
+      <Link to='/tables' slot='content-end'>
         <CalciteIcon icon="table" scale="l" />
-      </a>
-      <a slot='content-end'>
+      </Link>
+      <Link to='/map' slot='content-end'>
         <CalciteIcon icon="map" scale="l" />
-      </a>
-      <a slot='content-end'>
+      </Link>
+      <Link to='/scene' slot='content-end'>
         <CalciteIcon icon="globe" scale="l" />
-      </a>
-      <a slot='content-end'>
+      </Link>
+      <Link to='/' slot='content-end'>
         <CalciteIcon icon="home" scale="l" />
-      </a>
+      </Link>
       <CalciteNavigationUser slot='user' username={username} thumbnail={thumbnail} />
     </CalciteNavigation>
   );
