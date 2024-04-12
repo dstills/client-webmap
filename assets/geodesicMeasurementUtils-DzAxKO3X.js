@@ -1,0 +1,1 @@
+import{w as t}from"./geodesicUtils-0BUrW_mO.js";import{be as e,a9 as m}from"./index-D2dWKXoe.js";function f(o,r,a,i,...p){return e(o)&&t(o)?r.apply(void 0,p):m(o)?a.apply(void 0,p):i.apply(void 0,p)}const s=1e5;export{s as r,f as t};
