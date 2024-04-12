@@ -1,0 +1,1 @@
+import{b6 as p,dy as v,dz as c,aB as y}from"./index-BS4ejk0L.js";async function I(s,e,o){const n=p(s),a=e.toJSON(),r=v(n.query,{query:c({...a,f:"json"}),...o}),i=`${n.path}/versionInfos`,{data:t}=await y(i,r);return t.versions.map(f=>{const{versionName:u,versionGuid:d,...m}=f;return{...m,versionIdentifier:{name:u,guid:d}}})}export{I as getVersionInfos};

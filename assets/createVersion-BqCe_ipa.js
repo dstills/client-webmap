@@ -1,0 +1,1 @@
+import{b6 as f,dy as c,dz as p,aB as v}from"./index-BS4ejk0L.js";async function h(a,o,t){const e=f(a),i=o.toJSON(),n=c(e.query,{query:p({...i,f:"json"}),...t,authMode:"immediate",method:"post"}),r=`${e.path}/create`,{data:s}=await v(r,n),{versionName:d,versionGuid:m,...u}=s.versionInfo;return{...u,versionIdentifier:{name:d,guid:m}}}export{h as createVersion};
