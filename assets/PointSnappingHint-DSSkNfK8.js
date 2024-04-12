@@ -1,0 +1,1 @@
+import{g2 as i}from"./index-HSyhVbHY.js";import{a as n}from"./angularMeasurementUtils-Wmsz632s.js";class o extends n{constructor(t,s,r){super(s,r),this.point=t}equals(t){return t instanceof o&&i(this.point,t.point)}}export{o as n};

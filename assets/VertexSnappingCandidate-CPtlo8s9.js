@@ -1,0 +1,1 @@
+import{m as r}from"./angularMeasurementUtils-Wmsz632s.js";import{n}from"./SnappingManager-DFfN6h61.js";import{n as o}from"./PointSnappingHint-DSSkNfK8.js";class a extends n{constructor(t){super({...t,constraint:new r(t.targetPoint)})}get hints(){return[new o(this.targetPoint,this.isDraped,this.domain)]}}export{a as r};
