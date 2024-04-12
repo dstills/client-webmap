@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "xcopy": "xcopy /E /I node_modules/@esri/calcite-components/dist/calcite/assets/* public/assets",
+    "xcopy": "xcopy /E /I \"C:/Github/geo-app/client-webmap/node_modules/@esri/calcite-components/dist/calcite/assets\" \"C:/Github/geo-app/client-webmap/public/assets\"",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",

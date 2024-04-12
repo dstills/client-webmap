@@ -15,7 +15,7 @@ import ParsedArcgisMap from "./components/parsedArcgisMap";
 import ParsedArcgisScene from "./components/parsedArcgisScene";
 import { ArcgisMap, ArcgisScene, ArcgisBasemapGallery, ArcgisExpand, ArcgisTimeSlider, ArcgisLayerList, ArcgisCompass } from "@arcgis/map-components-react";
 import { setAssetPath as setCalciteAssetPath } from "@esri/calcite-components/dist/components";
-setCalciteAssetPath(window.location.href);
+setCalciteAssetPath(window.location.href + "/client-webmap");
 // import { ArcgisScene } from "@arcgis/map-components-react";
 import {
   CalciteShell,
