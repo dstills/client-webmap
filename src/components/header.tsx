@@ -43,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({ username, thumbnail, logoUrl, portalUrl
   }, [mapView, headerRef]);
   
   return (
-    <CalciteNavigation slot='header'>
+    <>
       <CalciteNavigationLogo
         slot='logo'
         href={portalUrl}
@@ -63,17 +63,17 @@ const Header: React.FC<HeaderProps> = ({ username, thumbnail, logoUrl, portalUrl
       <Link to='/tables' slot='content-end'>
         <CalciteIcon icon="table" scale="l" />
       </Link>
-      <Link to='/map' slot='content-end'>
+      <Link to='/map/2d' slot='content-end'>
         <CalciteIcon icon="map" scale="l" />
       </Link>
-      <Link to='/scene' slot='content-end'>
+      <Link to='/map/3d' slot='content-end'>
         <CalciteIcon icon="globe" scale="l" />
       </Link>
       <Link to='/' slot='content-end'>
         <CalciteIcon icon="home" scale="l" />
       </Link>
       <CalciteNavigationUser slot='user' username={username} thumbnail={thumbnail} />
-    </CalciteNavigation>
+    </>
   );
 }
 

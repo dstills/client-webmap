@@ -11,6 +11,8 @@ import TimeSlider from "@arcgis/core/widgets/TimeSlider";
 import Expand from "@arcgis/core/widgets/Expand";
 import TimeExtent from "@arcgis/core/TimeExtent";
 import SceneView from "@arcgis/core/views/SceneView";
+import ParsedArcgisMap from "./components/parsedArcgisMap";
+import ParsedArcgisScene from "./components/parsedArcgisScene";
 import { ArcgisMap, ArcgisScene, ArcgisBasemapGallery, ArcgisExpand, ArcgisTimeSlider, ArcgisLayerList, ArcgisCompass } from "@arcgis/map-components-react";
 import { setAssetPath as setCalciteAssetPath } from "@esri/calcite-components/dist/components";
 setCalciteAssetPath(window.location.href);
@@ -18,7 +20,8 @@ setCalciteAssetPath(window.location.href);
 import {
   CalciteShell,
   CalciteShellPanel,
-  CalcitePanel
+  CalcitePanel,
+  CalciteNavigation
 } from "@esri/calcite-components-react";
 import Header from "./components/header";
 import Sidebar from "./components/sidebar";
@@ -43,101 +46,106 @@ const fetchTimeExtent = async (url: string, time_field: string): Promise<TimeExt
 
 export default function App() {
   const [mapView, setMapView] = useState<(MapView | SceneView | null)>(null);
-  const [itemId , setItemId] = useState<string>("fd17c88a44ff4a6590bed974ea7eb0b1");
-  const handleArcgisViewReadyChange = async (event: { target: { view: MapView | SceneView } }) => {
-    const { view } = event.target;
-    console.log("MapView ready", view);
-    const timeExtent = await fetchTimeExtent("http://localhost:1337/api/features/", "sampledate");
-    const geojsonLayer = new GeoJSONLayer({
-      url: "http://localhost:1337/api/features/",
-      title: "GeoJSON Layer",
-      fields: [
-        {
-          name: "sampleid",
-          alias: "Sample ID",
-          type: "string",
-        },
-        {
-          name: "locationid",
-          alias: "Location ID",
-          type: "oid",
-        },
-        {
-          name: "sampledate",
-          alias: "Date",
-          type: "date",
-        },
-        {
-          name: "depth",
-          alias: "Depth",
-          type: "double",
-        }, {
-          name: "PCE",
-          alias: "Tetrachloroethene",
-          type: "double",
-        }
-      ],
-      outFields: ["*"],
-      renderer: new HeatMapRenderer({
-        valueExpression: "Number($feature.PCE)",
-        colorStops: [
-          { color: "rgba(0, 255, 0, 0)", ratio: 0 },
-          { color: "rgb(0, 255, 0)", ratio: 0.1 },
-          { color: "rgb(255, 255, 0)", ratio: 0.5 },
-          { color: "rgb(255, 0, 0)", ratio: 1 },
-        ],
-        minDensity: 0,
-        maxDensity: 0.1
-      }),
-      opacity: 0.75,
-      timeExtent,
-      popupTemplate: {
-        title: "{sampleid}",
-        content: [
-          {
-            type: "fields",
-            fieldInfos: [
-              {
-                fieldName: "sampleid",
-                label: "Sample ID",
-              },
-              {
-                fieldName: "locationid",
-                label: "Location ID",
-              },
-              {
-                fieldName: "sampledate",
-                label: "Date",
-              },
-              {
-                fieldName: "depth",
-                label: "Depth",
-              },
-              {
-                fieldName: "PCE",
-                label: "Tetrachloroethene",
-              },
-            ],
-          },
-        ],
-      }
-    });
-    const timeSlider = new TimeSlider({
-      container: document.createElement("div"),
-      view,
-      fullTimeExtent: timeExtent,
-      stops: {
-        interval: new TimeInterval({value: 1, unit: 'years'})
-      },
-    });
-    const expand = new Expand({
-      view,
-      content: timeSlider,
-      expandIconClass: "esri-icon-time-clock",
-    });
+  const [itemId , setItemId] = useState<string>("fd17c88a44ff4a6590bed974ea7eb0b1"); //fd17c88a44ff4a6590bed974ea7eb0b1 1f8fc584adb04f64afe38fcb2aa7f3bc
+  // const handleArcgisViewReadyChange = async (event: { target: { view: MapView | SceneView } }) => {
+  //   const { view } = event.target;
+  //   console.log("MapView ready", view);
+  //   const timeExtent = await fetchTimeExtent("http://localhost:1337/api/features/", "sampledate");
+  //   const geojsonLayer = new GeoJSONLayer({
+  //     url: "http://localhost:1337/api/features/",
+  //     title: "GeoJSON Layer",
+  //     fields: [
+  //       {
+  //         name: "sampleid",
+  //         alias: "Sample ID",
+  //         type: "string",
+  //       },
+  //       {
+  //         name: "locationid",
+  //         alias: "Location ID",
+  //         type: "oid",
+  //       },
+  //       {
+  //         name: "sampledate",
+  //         alias: "Date",
+  //         type: "date",
+  //       },
+  //       {
+  //         name: "depth",
+  //         alias: "Depth",
+  //         type: "double",
+  //       }, {
+  //         name: "PCE",
+  //         alias: "Tetrachloroethene",
+  //         type: "double",
+  //       }
+  //     ],
+  //     outFields: ["*"],
+  //     renderer: new HeatMapRenderer({
+  //       valueExpression: "Number($feature.PCE)",
+  //       colorStops: [
+  //         { color: "rgba(0, 255, 0, 0)", ratio: 0 },
+  //         { color: "rgb(0, 255, 0)", ratio: 0.1 },
+  //         { color: "rgb(255, 255, 0)", ratio: 0.5 },
+  //         { color: "rgb(255, 0, 0)", ratio: 1 },
+  //       ],
+  //       minDensity: 0,
+  //       maxDensity: 0.1
+  //     }),
+  //     opacity: 0.75,
+  //     timeExtent,
+  //     popupTemplate: {
+  //       title: "{sampleid}",
+  //       content: [
+  //         {
+  //           type: "fields",
+  //           fieldInfos: [
+  //             {
+  //               fieldName: "sampleid",
+  //               label: "Sample ID",
+  //             },
+  //             {
+  //               fieldName: "locationid",
+  //               label: "Location ID",
+  //             },
+  //             {
+  //               fieldName: "sampledate",
+  //               label: "Date",
+  //             },
+  //             {
+  //               fieldName: "depth",
+  //               label: "Depth",
+  //             },
+  //             {
+  //               fieldName: "PCE",
+  //               label: "Tetrachloroethene",
+  //             },
+  //           ],
+  //         },
+  //       ],
+  //     }
+  //   });
+  //   const timeSlider = new TimeSlider({
+  //     container: document.createElement("div"),
+  //     view,
+  //     fullTimeExtent: timeExtent,
+  //     stops: {
+  //       interval: new TimeInterval({value: 1, unit: 'years'})
+  //     },
+  //   });
+  //   const expand = new Expand({
+  //     view,
+  //     content: timeSlider,
+  //     expandIconClass: "esri-icon-time-clock",
+  //   });
 
-    view.ui.add(expand, "top-right");
-    view.map.add(geojsonLayer);
+  //   view.ui.add(expand, "top-right");
+  //   view.map.add(geojsonLayer);
+  //   setMapView(view);
+  // };
+
+  const handleViewChange = (view: MapView | SceneView) => {
+    console.log("View changed", view);
     setMapView(view);
   };
 
@@ -149,42 +157,33 @@ export default function App() {
     <Router>
       <MapContext.Provider value={mapView}>
         <CalciteShell>
-          <Header
-            username="Daniel Stills"
-            thumbnail="/assets/user.jpg"
-            logoUrl="/assets/logo.png"
-            portalUrl="https://geosyntec.maps.arcgis.com"
-            itemId={itemId}
-            onItemIdChange={handleItemIdChange}
-          />
+          <CalciteNavigation slot='header'>
+            <Header
+              username="Daniel Stills"
+              thumbnail="/assets/user.jpg"
+              logoUrl="/assets/logo.png"
+              portalUrl="https://geosyntec.maps.arcgis.com"
+              itemId={itemId}
+              onItemIdChange={handleItemIdChange}
+            />
+          </CalciteNavigation>
+          {mapView && <Sidebar />}
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/map" element={
-              <>
-                <Sidebar />
-                <ArcgisMap
-                  style={{ height: '100%', width: '100%' }}
-                  itemId={itemId}
-                  onArcgisViewReadyChange={handleArcgisViewReadyChange}
-                >
-                  <ArcgisExpand>
-                    <ArcgisBasemapGallery />
-                  </ArcgisExpand>
-                  <ArcgisExpand position="bottom-right">
-                    <ArcgisLayerList />
-                  </ArcgisExpand>
-                  <ArcgisCompass />
-                </ArcgisMap>
-              </>
-            } />
-            <Route path="/scene" element={
-              <>
-                <Sidebar />
-                <Scene
-                  onReady={handleArcgisViewReadyChange}
-                  zoom={10}
-                  center={[-118.805, 34.027]}
-              /></>} />
+            <Route path="/map/*" element={
+              <Routes>
+                <Route path="2d" element={
+                  <ParsedArcgisMap
+                    style={{ height: '100%', width: '100%' }}
+                    itemId={itemId}
+                    onViewChange={handleViewChange}
+                  ></ParsedArcgisMap>} />
+                  <Route path="3d" element={<ParsedArcgisScene
+                    style={{ height: '100%', width: '100%' }}
+                    itemId={itemId}
+                    onViewChange={handleViewChange}
+                  />} />
+              </Routes>} />
           </Routes>
         </CalciteShell>
       </MapContext.Provider>

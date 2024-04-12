@@ -10,15 +10,7 @@ calcite-shell {
   width: 100%;
   margin: 0;
   padding: 0;
-  /* display: flex;
-  flex-direction: column; */
 }
-
-/* calcite-panel {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-} */
 
 .sidebar {
   background-color: var(--calcite-color-background);
@@ -28,6 +20,6 @@ calcite-shell {
   width: 100%;
 }
 
-.hidden {
-  display: none;
+.sidebar-content {
+  padding: 1rem;
 }

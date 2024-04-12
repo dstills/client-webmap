@@ -5,14 +5,14 @@ import { CalciteTile } from "@esri/calcite-components-react";
 export default function Home() {
   return (
     <>
-      <Link to="/map">
+      <Link to="/map/2d">
         <CalciteTile
           icon="map"
           heading="Maps"
           description="2D Map"
         />
       </Link>
-      <Link to="/scene">
+      <Link to="/map/3d">
         <CalciteTile
           icon="globe"
           heading="Globe"
