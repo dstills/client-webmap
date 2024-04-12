@@ -26,7 +26,8 @@ const ParsedArcgisScene: React.FC<ArcgisSceneProps> = ({ itemId, style, onViewCh
       }
     });
     const esriMap = new EsriMap({
-      basemap: "topo-vector"
+      basemap: "topo-vector",
+      ground: "world-elevation"
     });
     const view = new SceneView({
       container: sceneViewDiv.current,
